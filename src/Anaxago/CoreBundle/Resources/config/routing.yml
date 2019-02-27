@@ -1,0 +1,9 @@
+anaxago_core_homepage:
+    path:     /
+    defaults: { _controller: AnaxagoCoreBundle:Default:index }
+
+api_project_public:
+  resource: "@AnaxagoCoreBundle/Controller/Api"
+  type: annotation
+  prefix: /api
+
