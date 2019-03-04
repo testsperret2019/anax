@@ -17,4 +17,6 @@ front/dist*
 front/src/assets/css/*
 storage/*.key
 vendor
-/var/*
+var
+composer.phar
+
