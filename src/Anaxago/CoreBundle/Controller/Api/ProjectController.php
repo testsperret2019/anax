@@ -38,7 +38,7 @@ class ProjectController extends AbstractFOSRestController
      */
     public function putProject(EntityManagerInterface $entityManager, Request $request)
     {
-        $project = $entityManager->getRepository(Project::class)->findOneById($request->get('id'));
+        $project = $entityManager->getRepository(Project::class)->findOneBySlug($request->get('slug'));
 
         if ($project) {
             $project->setSlug($request->get('slug'));  // move to service
@@ -59,14 +59,14 @@ class ProjectController extends AbstractFOSRestController
      */
     public function deleteProject(EntityManagerInterface $entityManager, Request $request)
     {
-        $project = $entityManager->getRepository(Project::class)->findOneById($request->get('id'));
+        $project = $entityManager->getRepository(Project::class)->findOneBySlug($request->get('slug'));
 
         if ($project) {
             $entityManager->remove($project);
             $entityManager->flush();
         }
 
-        return ['message' => $project->getTitle().' has been deleted'];
+        return ['message' => $project->getSlug().' has been deleted'];
     }
 
     /**
