@@ -58,10 +58,6 @@ class ProjectController extends AbstractFOSRestController
             // not found exception
         }
 
-        if (false === empty($request->get('slug'))) {
-            $project->setSlug($request->get('slug'));  // move to service
-        }
-
         $project->setTitle($request->get('title'));
         $project->setDescription($request->get('description'));
 
