@@ -11,9 +11,9 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\View;
 
+use Anaxago\CoreBundle\Services\ProjectService;
 
 /**
- * Class ProjectController
  *
  * @package Anaxago\CoreBundle\Controller
  */
@@ -24,9 +24,15 @@ class ProjectController extends AbstractFOSRestController
      * @Rest\Get("/project", name = "api_project_get", options={ "method_prefix" = false })
      * @Rest\View
      */
-    public function getProject(EntityManagerInterface $entityManager, Request $request)
+    public function getProject(
+        EntityManagerInterface $entityManager,
+        ProjectService $projectService,
+        Request $request
+    )
     {
-        $projects = $entityManager->getRepository(Project::class)->findAll();
+        $projects = $entityManager
+            ->getRepository(Project::class)
+            ->findAll();
 
         return $projects;
     }
@@ -36,18 +42,35 @@ class ProjectController extends AbstractFOSRestController
      * @Rest\Put("/project", name = "api_project_put", options={ "method_prefix" = false })
      * @Rest\View
      */
-    public function putProject(EntityManagerInterface $entityManager, Request $request)
+    public function putProject(
+            EntityManagerInterface $entityManager,
+            ProjectService $projectService,
+            Request $request
+    )
     {
-        $project = $entityManager->getRepository(Project::class)->findOneBySlug($request->get('slug'));
+        $project = $entityManager
+            ->getRepository(Project::class)
+            ->findOneBySlug(
+                $request->get('slug')
+            );
 
-        if ($project) {
-            $project->setSlug($request->get('slug'));  // move to service
-            $project->setTitle($request->get('title'));
-            $project->setDescription($request->get('description'));
-
-            $entityManager->persist($project);
-            $entityManager->flush();
+        if (is_null($project)) {
+            // not found exception
         }
+
+        if (false === empty($request->get('slug'))) {
+            $project->setSlug($request->get('slug'));  // move to service
+        }
+
+        $project->setTitle($request->get('title'));
+        $project->setDescription($request->get('description'));
+
+        $projectService->setProject($project);
+        $projectService->initSlug();
+        $project = $projectService->getProject();
+
+        $entityManager->persist($project);
+        $entityManager->flush();
 
         return $project;
     }
@@ -59,7 +82,11 @@ class ProjectController extends AbstractFOSRestController
      */
     public function deleteProject(EntityManagerInterface $entityManager, Request $request)
     {
-        $project = $entityManager->getRepository(Project::class)->findOneBySlug($request->get('slug'));
+        $project = $entityManager
+            ->getRepository(Project::class)
+            ->findOneBySlug(
+                $request->get('slug')
+            );
 
         if ($project) {
             $entityManager->remove($project);

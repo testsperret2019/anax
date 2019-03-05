@@ -39,7 +39,7 @@ class ProjectControllerTest extends WebTestCase
         $crawler = $client->request('PUT', '/api/project?slug='.$slug.'&title=myTitleUpdated&description=myDescriptionUpdated');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains($slug, $client->getResponse()->getContent());
+        $this->assertContains('myDescriptionUpdated', $client->getResponse()->getContent());
     }
 
     public function testDelete()
