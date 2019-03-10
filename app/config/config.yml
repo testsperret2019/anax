@@ -85,6 +85,7 @@ monolog:
             level: debug
 
 fos_rest:
+    disable_csrf_role: ROLE_API
     format_listener:
         rules:
             - { path: '^/api', priorities: ['xml'], fallback_format: xml, prefer_extension: false }
@@ -110,4 +111,5 @@ sensio_framework_extra:
     view:        { annotations: true }
     cache:       { annotations: true }
     security:    { annotations: true }
+    router:      { annotations: false }
     psr_message: { enabled: false } # Defaults to true if the PSR-7 bridge is installed
