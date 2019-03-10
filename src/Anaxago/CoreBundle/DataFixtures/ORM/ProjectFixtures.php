@@ -1,24 +1,23 @@
 <?php declare(strict_types = 1);
-/**
- * Created by PhpStorm.
- * User: nicolas
- * Date: 14/07/18
- * Time: 15:21
- */
 
 namespace Anaxago\CoreBundle\DataFixtures\ORM;
 
 use Anaxago\CoreBundle\Entity\Project;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Anaxago\CoreBundle\Enum\Project\Status;
 
 /**
- * @licence proprietary anaxago.com
  * Class ProjectFixtures
  * @package Anaxago\CoreBundle\DataFixtures\ORM
  */
 class ProjectFixtures extends Fixture
 {
+
+    const SLUG_FUNDED_PROJECT   = 'de-vinci';
+    const SLUG_NON_FUNDED_PROJECT_1   = 'nimoy';
+    const SLUG_NON_FUNDED_PROJECT_2   = 'shield';
+
     /**
      * Load data fixtures with the passed EntityManager
      *
@@ -29,9 +28,16 @@ class ProjectFixtures extends Fixture
         foreach ($this->getProjects() as $project) {
             $projectToPersist = (new Project())
                 ->setTitle($project['name'])
+                ->setStatus($project['status'])
+                ->setAmountCeil($project['amountCeil'])
+                ->setAmount($project['amount'])
                 ->setDescription($project['description'])
                 ->setSlug($project['slug']);
             $manager->persist($projectToPersist);
+            $this->addReference(
+                'project-'.$projectToPersist->getSlug(),
+                $projectToPersist
+            );
         }
         $manager->flush();
     }
@@ -43,20 +49,34 @@ class ProjectFixtures extends Fixture
     {
         return [
             [
-                'name' => 'Fred de la compta',
-                'description' => 'Dépoussiérer la comptabilité grâce à l\'intelligence artificielle',
-                'slug' => 'fred-compta',
+                'name' => 'residence de vinci',
+                'status' => Status::FUNDED,
+                'amountCeil' => 1200000,
+                'amount' => 1250000,
+                'description' => 'une superbe copropriété pour vos vieux jours',
+                'slug' => self::SLUG_FUNDED_PROJECT,
             ],
             [
-                'name' => 'Mojjo',
-                'description' => 'L\'intelligence artificielle au service du tennis : Mojjo transforme l\'expérience des joueurs et des fans de tennis grâce à une technologie unique de captation et de traitement de la donnée',
-                'slug' => 'mojjo',
+                'name' => 'résidence leonard Nimoy',
+                'status' => Status::NONFUNDED,
+                'amountCeil' => 100000,
+                'amount' => 99000,
+                'description' => 'Un cadre futuriste pour les geeks aménagé pour accueillir toutes les espèces de la fédération des planètes',
+                'slug' => self::SLUG_NON_FUNDED_PROJECT_1,
             ],
             [
-                'name' => 'Eole',
-                'description' => 'Projet de construction d\'une résidence de 80 logements sociaux à Petit-Bourg en Guadeloupe par le promoteur Orion.',
-                'slug' => 'eole',
+                'name' => 'captain',
+                'status' => Status::NONFUNDED,
+                'amountCeil' => 110000,
+                'amount' => 109000,
+                'description' => 'Le lieu idéal pour super-héros pour trouver un répos bien mérité',
+                'slug' => self::SLUG_NON_FUNDED_PROJECT_2,
             ],
         ];
+    }
+
+    public function getOrder()
+    {
+        return 1;
     }
 }

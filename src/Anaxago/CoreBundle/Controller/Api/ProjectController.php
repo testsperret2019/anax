@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\View;
+use Anaxago\CoreBundle\Enum\Project\Status;
 
 use Anaxago\CoreBundle\Services\ProjectService;
 
@@ -111,6 +112,7 @@ class ProjectController extends AbstractFOSRestController
         $project = new Project();
         $project->setSlug($request->get('slug'));
         $project->setTitle($request->get('title'));
+        $project->setStatus(Status::FUNDED);
         $project->setDescription($request->get('description'));
 
         $entityManager->persist($project);

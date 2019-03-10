@@ -7,6 +7,10 @@ use Symfony\Component\Serializer\Annotation\Groups as SerializerGroups;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
+use Anaxago\CoreBundle\Enum\Project\Status;
+use Anaxago\CoreBundle\Entity\Traits\IdAutoTrait;
+use Anaxago\CoreBundle\Entity\Traits\AmountTrait;
+
 
 /**
  * Project
@@ -17,19 +21,12 @@ use JMS\Serializer\Annotation\Groups;
  */
 class Project
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    use IdAutoTrait, AmountTrait;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(name="slug", type="string", length=255, nullable=false)
      * @expose
      */
     private $slug;
@@ -37,7 +34,31 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="status", type="string", length=10, nullable=false)
+     * @expose
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="amount_ceil", type="integer", nullable=true)
+     * @expose
+     */
+    private $amountCeil;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="amount", type="integer", nullable=true)
+     * @expose
+     */
+    private $amount;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @expose
      */
     private $title;
@@ -45,30 +66,18 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      * @expose
      */
     private $description;
 
-
     /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set slug
      *
      * @param string $slug
      *
      * @return Project
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug) : Project
     {
         $this->slug = $slug;
 
@@ -76,23 +85,78 @@ class Project
     }
 
     /**
-     * Get slug
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug() : string
     {
         return $this->slug;
     }
 
     /**
-     * Set title
+     *
+     * @param string $status
+     *
+     * @return Project
+     */
+    public function setStatus(string $status) : Project
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getStatus() : string
+    {
+        return $this->status;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isFunded() : bool
+    {
+        $isFunded = false;
+        if($this->status === Status::FUNDED) {
+            $isFunded = true;
+        }
+        return $isFunded;
+    }
+
+    /**
+     *
+     * @param integer $status
+     *
+     * @return Project
+     */
+    public function setAmountCeil(int $amountCeil) : Project
+    {
+        $this->amountCeil = $amountCeil;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return integer
+     */
+    public function getAmountCeil() : int
+    {
+        return $this->amountCeil;
+    }
+
+    /**
      *
      * @param string $title
      *
      * @return Project
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
 
@@ -100,23 +164,21 @@ class Project
     }
 
     /**
-     * Get title
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle() : string
     {
         return $this->title;
     }
 
     /**
-     * Set description
      *
      * @param string $description
      *
      * @return Project
      */
-    public function setDescription($description)
+    public function setDescription(string $description) : Project
     {
         $this->description = $description;
 
@@ -124,11 +186,10 @@ class Project
     }
 
     /**
-     * Get description
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }

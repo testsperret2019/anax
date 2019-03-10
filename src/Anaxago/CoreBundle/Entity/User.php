@@ -1,30 +1,18 @@
-<?php declare(strict_types = 1);
-/**
- * Created by PhpStorm.
- * User: nicolas
- * Date: 12/07/18
- * Time: 16:48
- */
+<?php
 
 namespace Anaxago\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Anaxago\CoreBundle\Entity\Traits\IdAutoTrait;
+use JMS\Serializer\Annotation\Expose;
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
 class User implements UserInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use IdAutoTrait;
 
     /**
      * @var string
@@ -76,17 +64,9 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName() : string
     {
         return $this->firstName;
     }
@@ -106,7 +86,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getLastName()
+    public function getLastName() : string
     {
         return $this->lastName;
     }
@@ -114,7 +94,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getFullName()
+    public function getFullName() : string
     {
         return $this->firstName.' '.$this->lastName;
     }
@@ -135,7 +115,7 @@ class User implements UserInterface
      *
      * @return string[] The user roles
      */
-    public function getRoles()
+    public function getRoles() : array
     {
         return $this->roles;
     }
@@ -148,7 +128,7 @@ class User implements UserInterface
      *
      * @return string The password
      */
-    public function getPassword()
+    public function getPassword() : string
     {
         return $this->password;
     }
@@ -170,7 +150,7 @@ class User implements UserInterface
      *
      * @return string The username
      */
-    public function getUsername()
+    public function getUsername() : string
     {
         return $this->username;
     }
@@ -216,7 +196,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getPlainPassword()
+    public function getPlainPassword() : string
     {
         return $this->plainPassword;
     }
@@ -248,7 +228,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getEmail()
+    public function getEmail() : string
     {
         return $this->email;
     }

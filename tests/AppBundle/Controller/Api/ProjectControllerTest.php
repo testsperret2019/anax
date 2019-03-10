@@ -10,10 +10,10 @@ class ProjectControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/api/project?slug=fred-compta');
+        $crawler = $client->request('GET', '/api/project?slug=de-vinci');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('fred-compta', $client->getResponse()->getContent());
+        $this->assertContains('de-vinci', $client->getResponse()->getContent());
     }
 
     public function testGetAll()
@@ -23,7 +23,7 @@ class ProjectControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/api/project');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('fred-compta', $client->getResponse()->getContent());
+        $this->assertContains('de-vinci', $client->getResponse()->getContent());
     }
 
     public function testPost()
