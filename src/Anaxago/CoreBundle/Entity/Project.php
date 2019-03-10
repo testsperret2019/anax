@@ -43,7 +43,6 @@ class Project
      * @var string
      *
      * @ORM\Column(name="amount_ceil", type="integer", nullable=true)
-     * @expose
      */
     private $amountCeil;
 
@@ -51,7 +50,6 @@ class Project
      * @var integer
      *
      * @ORM\Column(name="amount", type="integer", nullable=true)
-     * @expose
      */
     private $amount;
 
