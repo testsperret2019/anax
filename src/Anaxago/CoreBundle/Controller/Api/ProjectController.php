@@ -22,7 +22,6 @@ class ProjectController extends AbstractFOSRestController
     /**
      * @return \FOS\RestBundle\View\View
      * @Rest\Get("/project", name = "api_project_get", options={ "method_prefix" = false })
-     * @Rest\View
      */
     public function getProject(
         EntityManagerInterface $entityManager,
@@ -30,9 +29,19 @@ class ProjectController extends AbstractFOSRestController
         Request $request
     )
     {
-        $projects = $entityManager
-            ->getRepository(Project::class)
-            ->findAll();
+        if ($request->get('slug')) {
+            $projects = $entityManager
+                ->getRepository(Project::class)
+                ->findOneBySlug(
+                    $request->get('slug')
+                );
+        }
+
+        if (empty($request->get('slug'))) {
+            $projects = $entityManager
+                ->getRepository(Project::class)
+                ->findAll();
+        }
 
         return $projects;
     }

@@ -6,7 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ProjectControllerTest extends WebTestCase
 {
-    public function testGet()
+    public function testGetOne()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/api/project?slug=fred-compta');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertContains('fred-compta', $client->getResponse()->getContent());
+    }
+
+    public function testGetAll()
     {
         $client = static::createClient();
 

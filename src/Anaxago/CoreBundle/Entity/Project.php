@@ -3,12 +3,17 @@
 namespace Anaxago\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups as SerializerGroups;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Project
  *
  * @ORM\Table(name="project")
  * @ORM\Entity(repositoryClass="Anaxago\CoreBundle\Repository\ProjectRepository")
+ * @ExclusionPolicy("all")
  */
 class Project
 {
@@ -25,6 +30,7 @@ class Project
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
+     * @expose
      */
     private $slug;
 
@@ -32,6 +38,7 @@ class Project
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @expose
      */
     private $title;
 
@@ -39,6 +46,7 @@ class Project
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @expose
      */
     private $description;
 
