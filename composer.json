@@ -26,6 +26,7 @@
         "friendsofsymfony/rest-bundle": "^2.5",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "2.3.0",
+        "lexik/jwt-authentication-bundle": "^2.6",
         "mockery/mockery": "^1.2",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.2",
@@ -56,7 +57,7 @@
             "@symfony-scripts"
         ],
         "init-db": [
-            "php bin/console doctrine:database:drop --if-exists --force",
+            "php bin/console doctrine:database:drop --if-exists --force    ",
             "php bin/console doctrine:database:create",
             "php bin/console doctrine:schema:update --force",
             "php bin/console doctrine:fixtures:load -n"

@@ -7,3 +7,10 @@ api_project_public:
   type: annotation
   prefix: /api
 
+api_project_private:
+  resource: "@AnaxagoCoreBundle/Controller/Api/Secure"
+  type: annotation
+  prefix: /api/secure
+
+api_login_check:
+    path: /api/login_check
